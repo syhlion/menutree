@@ -6,7 +6,7 @@
  * Time: 上午 9:19
  */
 
-namespace Rde\MenuTree;
+namespace Rde;
 
 
 interface IMenuProvider

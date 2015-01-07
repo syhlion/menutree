@@ -6,7 +6,7 @@
  * Time: 下午 1:43
  */
 
-namespace Rde\MenuTree;
+namespace Rde;
 
 
 interface IUserProvider

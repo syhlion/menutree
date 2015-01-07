@@ -6,7 +6,7 @@
  * Time: 上午 9:33
  */
 
-namespace Rde\MenuTree;
+namespace Rde;
 
 
 use SebastianBergmann\Exporter\Exception;

@@ -6,7 +6,7 @@
  * Time: 下午 1:46
  */
 
-namespace Rde\MenuTree;
+namespace Rde;
 
 
 class User implements IUserProvider

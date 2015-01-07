@@ -6,7 +6,7 @@
  * Time: 上午 9:35
  */
 
-namespace Rde\MenuTree;
+namespace Rde;
 
 
 class MenuTree
