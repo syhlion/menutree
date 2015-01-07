@@ -7,7 +7,7 @@
  */
 
 namespace Rde;
-
+use \PDO;
 
 use SebastianBergmann\Exporter\Exception;
 
