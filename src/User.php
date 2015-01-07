@@ -7,7 +7,7 @@
  */
 
 namespace Rde;
-
+use \PDO;
 
 class User implements IUserProvider
 {
@@ -18,7 +18,7 @@ class User implements IUserProvider
     private $usergroup_table;
     private $menugroup_table = "menu_menugroup";
 
-    public function __construct(\PDO $pdo, $site)
+    public function __construct(PDO $pdo, $site)
     {
         $this->connect = $pdo;
         //$this->site = $site;
