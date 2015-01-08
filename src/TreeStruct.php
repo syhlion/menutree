@@ -40,10 +40,12 @@ class TreeStruct
     private static function create($data, $selfColumn, $parentColumn, $parentId, $deep)
     {
         $memberList = array();
+
+        //深度累加
+        $deep = $deep + 1;
         foreach ($data as $value) {
             if ($parentId == $value[$parentColumn]) {
                 $node = array();
-                $deep = $deep + 1;
                 $node['deep'] = $deep;
                 $node['self'] = $value;
                 $node['children'] = static::create($data, $selfColumn, $parentColumn, $value[$selfColumn], $deep);
