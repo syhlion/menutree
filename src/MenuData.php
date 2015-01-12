@@ -14,18 +14,16 @@ use SebastianBergmann\Exporter\Exception;
 class MenuData implements IMenuProvider
 {
 
-    private $source;
 
     private $selfColumn = 'item_id';
     private $parentColumn = 'parent_id';
-    private $datafields = array('id' => '', 'item_id' => '', 'parent_id'=> '', 'depth'=> '', 'left' => '', 'right' => '', 'url_name' =>'', 'url' );
     private $userMenu = array();
 
     private $sqlite;
-    public function __construct(Array $userMenu = array())
+    public function __construct(PDO $connect, Array $userMenu = array())
     {
         try {
-            $this->sqlite = new PDO('sqlite:'.__DIR___.'/menudata.db3');
+            $this->sqlite = $connect;
             $this->userMenu = $userMenu;
         } catch(Exception $e) {
 
@@ -35,7 +33,7 @@ class MenuData implements IMenuProvider
     public function find($callback)
     {
         $result = array();
-        foreach ($this->source as $value) {
+        foreach ($this->get() as $value) {
             if ($callback($value)) {
                 $result[] = $value;
             }
@@ -57,26 +55,28 @@ class MenuData implements IMenuProvider
     public function get()
     {
         $filters = $this->getfilter();
-        //$origin = Config::get('systemmenu');
 
         $rs = $this->sqlite->query("SELECT * FROM menu");
         $rs->setFetchMode(PDO::FETCH_ASSOC);
         $origin = $rs->fetchAll();
+        $newsource = array();
 
         if (count($filters) != 0) {
-            $newsource = array();
+
             foreach ($origin as $value) {
+
                 if (in_array($value[$this->selfColumn], $filters)) {
+
                     $newsource[] = $value;
                 }
             }
 
-            $this->source = $newsource;
+            $source = $newsource;
         } else {
-            $this->source = $origin;
+            $source = $origin;
         }
 
-        return $this->unique($this->source);
+        return $this->unique($source);
     }
 
 
@@ -84,27 +84,34 @@ class MenuData implements IMenuProvider
     public function update(Array $updateData)
     {
         try {
-
+            $sql = "DELETE FROM menu";
+            $this->sqlite->query($sql);
             foreach ($updateData as $data) {
-                $values[] = "(".implode(",", $data).")";
+
+                $values[] = "('".implode("','", $data)."')";
+
             }
-            $sql = "INSERT INTO menu (`id`, `item_id`, `parent_id`, `depth`, `left`, `right`, `url_name`, `url`) VALUES (".implode(",", $values).")";
+
+            $sql = "INSERT INTO menu (`id`, `item_id`, `parent_id`, `depth`, `left`, `right`, `url_name`, `url`) VALUES ".implode(",", $values);
             $this->sqlite->query($sql);
 
-            return true;
-        } catch(Excetpion $e) {
+        } catch(Exception $e) {
 
             throw $e;
         }
+    }
+
+    public function setFilter(Array $filter)
+    {
+        $this->userMenu = array_unique($filter);
+
     }
 
     //把建構子的條件組成所需的array
     private function getfilter()
     {
         if (count($this->userMenu) === 0) return array();
-        $menu = implode("|", $this->userMenu);
-        $menu = explode("|", $menu);
-        $filter = array_unique($menu);
+        $filter = array_unique($this->userMenu);
 
         return $filter;
     }

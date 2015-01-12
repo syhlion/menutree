@@ -15,19 +15,7 @@ interface IUserProvider
      * @param $user_key
      * @return mixed array
      */
-    public function find_user_menu($user_key);
+    public function find_menu();
 
-    /**
-     * @param $group_key
-     * @param $menu_list string  ex GAMELIST|FF_GROUP
-     * @return mixed
-     */
-    public function edit_group($group_key, $menu_list);
 
-    /**
-     * @param $user_key
-     * @param array $group_key
-     * @return mixed
-     */
-    public function edit_user_group($user_key, Array $group_key);
 }

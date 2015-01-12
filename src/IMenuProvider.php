@@ -21,4 +21,6 @@ interface IMenuProvider
 
     public function find($callback);
 
+    public function setFilter(Array $filter);
+
 }

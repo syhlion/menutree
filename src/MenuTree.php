@@ -11,32 +11,17 @@ use \PDO;
 
 class MenuTree
 {
-    //存放TreeProxy物件用
-    private $treeProxy = null;
 
-    public function __construct(array $options)
+    //存放實作IMenuProvider的物件
+    private $menuProvider;
+
+    //存放組合完畢的樹狀結構
+    private $treeData;
+
+    public function __construct(IMenuProvider $menuProvider)
     {
-        $site = \Rde\array_get($options, 'site');
-        $id = \Rde\array_get($options, 'id');
-        $dsn = \Rde\array_get($options, 'dsn');
-        $username = \Rde\array_get($options, 'username');
-        $password = \Rde\array_get($options, 'password');
-
-        //連線回nsc用
-        try {
-            $connect = new PDO($dsn, $username, $password);
-        } catch (PDOException $e) {
-            echo 'Connection failed: ' . $e->getMessage();
-        }
-
-        //TODO 因應帳號兩個來源，一個是ACC一個是本身DB 未來整回ACC時,要作修改
-        $user = new User($connect, $site);
-
-
-        $menu = $user->find_user_menu($id);
-
-
-        $this->treeProxy = new TreeProxy(new MenuData($menu));
+        $this->menuProvider = $menuProvider;
+        $this->treeData = static::getTree($this->menuProvider->get(), $this->menuProvider->getSelfColumn(), $this->menuProvider->getParentColumn());
     }
 
     /**
@@ -45,7 +30,7 @@ class MenuTree
      */
     public function get()
     {
-        return $this->treeProxy->getTree();
+        return $this->treeData;
     }
 
     /**
@@ -73,7 +58,7 @@ class MenuTree
                 return false;
             }
         };
-        $data = $this->systemMenu->find($callback);
+        $data = $this->menuProvider->find($callback);
         if (count($data) > 0) {
 
             return true;
@@ -83,4 +68,50 @@ class MenuTree
         }
 
     }
+
+    /**
+     * 拿樹狀結構
+     * @param $data 一個可以迭代陣列
+     * @param $selfColumn 迭代陣列裡,自己唯一ID欄位名稱
+     * @param $parentColumn 迭代陣列裡,找尋父欄位ID欄位名稱
+     * @return array
+     */
+    private static function getTree($data, $selfColumn, $parentColumn)
+    {
+        $memberList = array();
+        foreach ($data as $value) {
+            if ($value[$parentColumn] == 'null') {
+                $node = array();
+                $deep = 0;
+                $node['deep'] = $deep;
+                $node['self'] = $value;
+                $node['children'] = static::createTree($data, $selfColumn, $parentColumn, $value[$selfColumn], $deep);
+                $memberList[]=$node;
+            }
+        }
+
+        return $memberList;
+    }
+
+    // 創建樹狀資料
+    private static function createTree($data, $selfColumn, $parentColumn, $parentId, $deep)
+    {
+        $memberList = array();
+
+        //深度累加
+        $deep = $deep + 1;
+        foreach ($data as $value) {
+            if ($parentId == $value[$parentColumn]) {
+                $node = array();
+                $node['deep'] = $deep;
+                $node['self'] = $value;
+                $node['children'] = static::createTree($data, $selfColumn, $parentColumn, $value[$selfColumn], $deep);
+                $memberList[]=$node;
+            }
+
+        }
+
+        return $memberList;
+    }
+
 }

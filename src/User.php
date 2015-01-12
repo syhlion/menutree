@@ -12,68 +12,48 @@ use \PDO;
 class User implements IUserProvider
 {
 
-
-    private $site;
-    private $connect;
+    private $pdo;
     private $usergroup_table;
     private $menugroup_table = "menu_menugroup";
+    private $userId;
 
-    public function __construct(PDO $pdo, $site)
+    public function __construct(PDO $pdo, $site, $userId)
     {
-        $this->connect = $pdo;
-        //$this->site = $site;
+
+        //TODO 因應帳號兩個來源，一個是ACC一個是本身DB 未來整回ACC時,要作修改
+        $this->pdo = $pdo;
         if ($site == "allctl") {
             $this->usergroup_table = "menu_allctlusergroup";
         } else {
             $this->usergroup_table = "menu_usergroup";
         }
+        $this->userId = $userId;
 
     }
 
     /**
-     * @param $group_key
-     * @param $menu_list string  ex GAMELIST|FF_GROUP
-     * @return mixed
-     */
-    public function edit_group($group_key, $menu_list)
-    {
-        // TODO: Implement edit_group() method.
-    }
-
-    /**
-     * @param $user_key
-     * @param array $group_key
-     * @return mixed
-     */
-    public function edit_user_group($user_key, Array $group_key)
-    {
-        // TODO: Implement edit_user_group() method.
-    }
-
-    /**
-     * @param $user_key
      * @return mixed array
      */
-    public function find_user_menu($user_key)
+    public function find_menu()
     {
         $sql = "SELECT * FROM {$this->usergroup_table}
                 JOIN {$this->menugroup_table}
                 ON {$this->menugroup_table}.group_id = {$this->usergroup_table}.group_id
-                WHERE user_id = {$user_key}";
-        $menu = array();
+                WHERE user_id = {$this->userId}";
+        $item = array();
 
-        $rs = $this->connect->query($sql);
+        $rs = $this->pdo->query($sql);
         $rs->setFetchMode(PDO::FETCH_ASSOC);
         $result_arr = $rs->fetchAll();
-
         foreach ($result_arr as $data) {
-            $menu[] = $data['item_list'];
+            $tmp =  explode("|", $data['item_list']);
+            $item = array_merge($tmp, $item);
         }
+        $menu = array();
 
         //因為不給null 系統選單會預設全撈
-        $menu = (count($menu) <= 0 ) ? array('null') : $menu;
-
-        return $menu;
+        $item= (count($item) <= 0 ) ? array('null') : $item;
+        return $item;
     }
 
 }
