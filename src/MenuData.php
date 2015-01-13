@@ -20,6 +20,12 @@ class MenuData implements IMenuProvider
     private $userMenu = array();
 
     private $sqlite;
+
+    /**
+     * 選單建構
+     * @param array $userMenu 可選填 不填會返回全部選單
+     * @param PDO $pdo 可選填 不填預設就是src/storage/menudata.sqlite3
+     */
     public function __construct(Array $userMenu = array(), PDO $pdo  = null)
     {
         try {

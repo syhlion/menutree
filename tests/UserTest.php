@@ -9,6 +9,9 @@
 class UserTest extends PHPUnit_Framework_TestCase
 {
     private $pdo;
+
+    //TODO 改成用sqlite 測試（原始設定環境是以mysql為主）
+    //TODO 跟MenuDataTest一樣，需要找方法解決每測試一次，就會有版本異動。
     public function setUp()
     {
         $this->pdo = new PDO('sqlite:' . dirname(__FILE__) . '/dbtest/userdbtest.sqlite3');

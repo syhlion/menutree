@@ -17,6 +17,11 @@ class User implements IUserProvider
     private $menugroup_table = "menu_menugroup";
     private $userId;
 
+    /**
+     * @param PDO $pdo pdo連線
+     * @param $site 站台 ex allctl,sk2,...
+     * @param $userId 使用者名稱
+     */
     public function __construct(PDO $pdo, $site, $userId)
     {
 

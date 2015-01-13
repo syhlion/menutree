@@ -12,7 +12,9 @@ class MenuDataTest extends PHPUnit_Framework_TestCase
     private $menuData;
 
 
-    //初始化db值
+    //初始化db
+    //TODO 不知為何 php5.4 無法支援一次寫入sql  之後要找時間查
+    //TODO DB測試方法有點粗糙，測試一次原本sqlite，就會有檔案異動，要找方法解決
     protected function setUp()
     {
         $this->pdo = new PDO('sqlite:' . dirname(__FILE__) . '/dbtest/menudbtest.sqlite3');
