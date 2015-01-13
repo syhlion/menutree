@@ -11,7 +11,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     private $pdo;
     public function setUp()
     {
-        $this->pdo = new PDO('mysql:host=127.0.0.1;dbname=NSC_AccountDB','root','760804');
+        $this->pdo = new PDO('sqlite:' . dirname(__FILE__) . '/dbtest/userdbtest.sqlite3');
         $sql = "DELETE FROM menu_allctlusergroup";
         $this->pdo->query($sql);
         $sql = "DELETE FROM menu_menugroup";

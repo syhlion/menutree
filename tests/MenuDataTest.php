@@ -15,7 +15,7 @@ class MenuDataTest extends PHPUnit_Framework_TestCase
     //初始化db值
     protected function setUp()
     {
-        $this->pdo = new PDO('sqlite:' . dirname(__FILE__) . '/dbtest/dbtest.sqlite3');
+        $this->pdo = new PDO('sqlite:' . dirname(__FILE__) . '/dbtest/menudbtest.sqlite3');
         $sql = "DELETE FROM menu";
         $this->pdo->query($sql);
         $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
