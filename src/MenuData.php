@@ -20,10 +20,13 @@ class MenuData implements IMenuProvider
     private $userMenu = array();
 
     private $sqlite;
-    public function __construct(PDO $connect, Array $userMenu = array())
+    public function __construct(Array $userMenu = array(), PDO $pdo  = null)
     {
         try {
-            $this->sqlite = $connect;
+            if ($pdo == null) {
+                $pdo = new PDO('sqlite:' . dirname(__FILE__) . '/storate/menudata.sqlite3');
+            }
+            $this->sqlite = $pdo;
             $this->userMenu = $userMenu;
         } catch(Exception $e) {
 
