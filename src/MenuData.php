@@ -24,7 +24,7 @@ class MenuData implements IMenuProvider
     {
         try {
             if ($pdo == null) {
-                $pdo = new PDO('sqlite:' . dirname(__FILE__) . '/storate/menudata.sqlite3');
+                $pdo = new PDO('sqlite:' . dirname(__FILE__) . '/storage/menudata.sqlite3');
             }
             $this->sqlite = $pdo;
             $this->userMenu = $userMenu;
