@@ -19,14 +19,32 @@ class MenuDataTest extends PHPUnit_Framework_TestCase
         $sql = "DELETE FROM menu";
         $this->pdo->query($sql);
         $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
-                (1,1,'null',0,0,0,'test/test1','test1'),
-                (1,2,1,0,0,0,'test/test2','test2'),
-                (1,3,2,0,0,0,'test/test3','test3'),
-                (1,4,3,0,0,0,'test/test4','test4'),
-                (1,5,4,0,0,0,'test/test5','test5'),
-                (1,6,5,0,0,0,'test/test6','test6'),
+                (1,1,'null',0,0,0,'test/test1','test1')";
+        $this->pdo->query($sql);
+        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
+                (1,2,1,0,0,0,'test/test2','test2')
+               ";
+        $this->pdo->query($sql);
+        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
+                (1,3,2,0,0,0,'test/test3','test3')
+                ";
+        $this->pdo->query($sql);
+        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
+                (1,4,3,0,0,0,'test/test4','test4')
+                ";
+        $this->pdo->query($sql);
+        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
+                (1,5,4,0,0,0,'test/test5','test5')
+               ";
+        $this->pdo->query($sql);
+        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
+                (1,6,5,0,0,0,'test/test6','test6')
+                ";
+        $this->pdo->query($sql);
+        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
                 (1,7,2,0,0,0,'test/test7','test7')";
         $this->pdo->query($sql);
+        
         $filter = array("2","7");
         $this->menuData = new \Rde\MenuData($filter, $this->pdo);
     }
