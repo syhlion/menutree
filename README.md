@@ -7,7 +7,7 @@ Installation：
 ``` json
 {
     "require": {
-        "rde/": "0.1.*@dev"
+        "rde/menutree": "0.1.*@dev"
     }
 }
 ```
