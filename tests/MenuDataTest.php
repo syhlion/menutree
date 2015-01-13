@@ -40,6 +40,7 @@ class MenuDataTest extends PHPUnit_Framework_TestCase
             }
         };
         $result = $this->menuData->find($callback);
+        var_dump($result);
         $this->assertEquals($result[0]['url_name'], 'test/test7');
 
         $callback2 = function($item){
