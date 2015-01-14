@@ -17,23 +17,21 @@ class MenuData implements IMenuProvider
 
     private $selfColumn = 'item_id';
     private $parentColumn = 'parent_id';
-    private $userMenu = array();
+    private $filter = array();
 
     private $sqlite;
 
     /**
      * 選單建構
-     * @param array $userMenu 可選填 不填會返回全部選單
      * @param PDO $pdo 可選填 不填預設就是src/storage/menudata.sqlite3
      */
-    public function __construct(Array $userMenu = array(), PDO $pdo  = null)
+    public function __construct(PDO $pdo  = null)
     {
         try {
             if ($pdo == null) {
                 $pdo = new PDO('sqlite:' . dirname(__FILE__) . '/storage/menudata.sqlite3');
             }
             $this->sqlite = $pdo;
-            $this->userMenu = $userMenu;
         } catch(Exception $e) {
             $e->getTrace();
         }
@@ -88,6 +86,21 @@ class MenuData implements IMenuProvider
         return $this->unique($source);
     }
 
+    public function getfilter()
+    {
+        return $this->filter;
+    }
+
+    /**
+     * 設定過濾資料條件
+     * @param array $filter ex array(item_1, item2, ...)
+     * @return this
+     */
+    public function setFilter(Array $filter)
+    {
+        $this->filter = array_unique($filter);
+        return $this;
+    }
 
 
     public function update(Array $updateData)
@@ -111,22 +124,6 @@ class MenuData implements IMenuProvider
             $this->sqlite->rollBack();
             throw $e;
         }
-    }
-
-    public function setFilter(Array $filter)
-    {
-        $this->userMenu = array_unique($filter);
-
-        return $this;
-    }
-
-    //把建構子的條件組成所需的array
-    private function getfilter()
-    {
-        if (count($this->userMenu) === 0) return array();
-        $filter = array_unique($this->userMenu);
-
-        return $filter;
     }
 
     //去除重複元素，以免再組treestruct造成無限遞迴

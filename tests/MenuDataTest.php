@@ -31,8 +31,8 @@ class MenuDataTest extends PHPUnit_Framework_TestCase
         $this->pdo->beginTransaction();
         $this->pdo->exec($sql);
         $this->pdo->commit();
-        $filter = array("2","7");
-        $this->menuData = new \Rde\MenuData($filter, $this->pdo);
+        $this->menuData = new \Rde\MenuData($this->pdo);
+        $this->menuData->setFilter(array(2,7));
     }
 
 

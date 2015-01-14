@@ -18,6 +18,7 @@ interface IMenuProvider
      */
     public function get();
 
+
     /**
      * @param $index 要插入的索引位址
      * @param array $insertData

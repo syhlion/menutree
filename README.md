@@ -58,10 +58,10 @@ array(
 $pdo_mysql = new PDO('mysql:host=127.0.0.1;dbname=account','root','xxxx');
 $user = new User($pdo_mysql);
 
-//find_menu() 會用array回傳 每個item_id  ex array(key_1,key_2...) 
-//建構參數userMenu 可選填，沒有填預設會返回完整的選單，有填則會過濾出填入的值得選單資料
+//find_menu() 會用array回傳 每個item_id  ex array(key_1,key_2...)
 //建構參數pdo 可選填，沒填預設會讀取src/storage/menudata.sqlite3 裡的資料
-$menuOrigin = new MenuData($user->find_menu());
+$menuOrigin = new MenuData();
+
 
 $insertData = array(
     array(
@@ -110,7 +110,7 @@ array(
     ),
 );
 */
-$menuOrigin->insert(1, $insertData)->get(); 
+$menuOrigin->setFilter($user->find_menu())->insert(1, $insertData)->get(); 
 
 
 //建構選單樹狀物件
@@ -153,7 +153,7 @@ array(
     )
 )
 */
-$bool = $menutree->get("controller/method"); //可判斷此uri是否符合權限 會回傳 true false
+$bool = $menutree->check("controller/method"); //可判斷此uri是否符合權限 會回傳 true false
 
 ```
 
