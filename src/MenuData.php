@@ -95,17 +95,20 @@ class MenuData implements IMenuProvider
         try {
 
             $sql = "DELETE FROM menu";
-            $this->sqlite->query($sql);
+            $this->sqlite->exec($sql);
+            $sql = "";
+
+            //TODO 因為sqlite 3.7.11前不支援 sql batch寫法 只能以此方法寫入
             foreach ($updateData as $data) {
-                $values[] = "('".implode("','", $data)."')";
+                $sql .= "INSERT INTO menu (`id`, `item_id`, `parent_id`, `depth`, `left`, `right`, `url_name`, `url`) VALUES "."('".implode("','", $data)."')".";";
 
             }
-            $sql = "INSERT INTO menu (`id`, `item_id`, `parent_id`, `depth`, `left`, `right`, `url_name`, `url`) VALUES ".implode(",", $values);
-            $this->sqlite->query($sql);
-
+            $this->sqlite->beginTransaction();
+            $this->sqlite->exec($sql);
+            $this->sqlite->commit();
             return $this;
         } catch(Exception $e) {
-
+            $this->sqlite->rollBack();
             throw $e;
         }
     }

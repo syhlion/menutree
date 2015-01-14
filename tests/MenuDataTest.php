@@ -13,40 +13,24 @@ class MenuDataTest extends PHPUnit_Framework_TestCase
 
 
     //初始化db
-    //TODO 不知為何 php5.4 無法支援一次寫入sql  之後要找時間查
-    //TODO DB測試方法有點粗糙，測試一次原本sqlite，就會有檔案異動，要找方法解決
+    //TODO php5.4 預載的sqlite 3.7.7.1 無法sql batch寫法  所以分成多筆寫入
     protected function setUp()
     {
         $this->pdo = new PDO('sqlite:' . dirname(__FILE__) . '/dbtest/menudbtest.sqlite3');
         $sql = "DELETE FROM menu";
         $this->pdo->query($sql);
-        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
-                (1,1,'null',0,0,0,'test/test1','test1')";
-        $this->pdo->query($sql);
-        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
-                (1,2,1,0,0,0,'test/test2','test2')
-               ";
-        $this->pdo->query($sql);
-        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
-                (1,3,2,0,0,0,'test/test3','test3')
+        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES (1,1,'null',0,0,0,'test/test1','test1');
+                INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES (1,2,1,0,0,0,'test/test2','test2');
+                INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES (1,3,2,0,0,0,'test/test3','test3');
+                INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES (1,3,2,0,0,0,'test/test3','test3');
+                INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES (1,4,3,0,0,0,'test/test4','test4');
+                INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES (1,5,4,0,0,0,'test/test5','test5');
+                INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES (1,6,5,0,0,0,'test/test6','test6');
+                INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES (1,7,2,0,0,0,'test/test7','test7');
                 ";
-        $this->pdo->query($sql);
-        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
-                (1,4,3,0,0,0,'test/test4','test4')
-                ";
-        $this->pdo->query($sql);
-        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
-                (1,5,4,0,0,0,'test/test5','test5')
-               ";
-        $this->pdo->query($sql);
-        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
-                (1,6,5,0,0,0,'test/test6','test6')
-                ";
-        $this->pdo->query($sql);
-        $sql = "INSERT INTO menu (id, item_id, parent_id, depth, left, right, url_name, url) VALUES
-                (1,7,2,0,0,0,'test/test7','test7')";
-        $this->pdo->query($sql);
-        
+        $this->pdo->beginTransaction();
+        $this->pdo->exec($sql);
+        $this->pdo->commit();
         $filter = array("2","7");
         $this->menuData = new \Rde\MenuData($filter, $this->pdo);
     }
