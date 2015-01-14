@@ -18,10 +18,17 @@ interface IMenuProvider
      */
     public function get();
 
+    /**
+     * @param $index 要插入的索引位址
+     * @param array $insertData
+     * @return this
+     */
+    public function insert($index, Array $insertData);
 
     /**
      * 更新資料（會整個資料刷新而不是插入單筆）
      * @param array $updateData
+     * @return this
      */
     public function update(Array $updateData);
 
@@ -46,6 +53,7 @@ interface IMenuProvider
     /**
      * 設定過濾資料條件
      * @param array $filter ex array(item_1, item2, ...)
+     * @return this
      */
     public function setFilter(Array $filter);
 

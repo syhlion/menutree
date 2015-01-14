@@ -35,7 +35,7 @@ class MenuData implements IMenuProvider
             $this->sqlite = $pdo;
             $this->userMenu = $userMenu;
         } catch(Exception $e) {
-
+            $e->getTrace();
         }
 
     }
@@ -93,17 +93,17 @@ class MenuData implements IMenuProvider
     public function update(Array $updateData)
     {
         try {
+
             $sql = "DELETE FROM menu";
             $this->sqlite->query($sql);
             foreach ($updateData as $data) {
-
                 $values[] = "('".implode("','", $data)."')";
 
             }
-
             $sql = "INSERT INTO menu (`id`, `item_id`, `parent_id`, `depth`, `left`, `right`, `url_name`, `url`) VALUES ".implode(",", $values);
             $this->sqlite->query($sql);
 
+            return $this;
         } catch(Exception $e) {
 
             throw $e;
@@ -114,6 +114,7 @@ class MenuData implements IMenuProvider
     {
         $this->userMenu = array_unique($filter);
 
+        return $this;
     }
 
     //把建構子的條件組成所需的array
@@ -143,4 +144,22 @@ class MenuData implements IMenuProvider
     }
 
 
+    /**
+     * @param $index 要插入的索引位址 (0 base)
+     * @param array $insertData
+     * @return this
+     */
+    public function insert($index, Array $insertData)
+    {
+        $list = $this->get();
+        $end = array_slice($list, $index, count($list));
+        array_splice($list, $index, count($list), $insertData);
+        foreach ($end as $item) {
+            array_push($list,$item);
+        }
+        $this->update($list);
+
+        return $this;
+
+    }
 }

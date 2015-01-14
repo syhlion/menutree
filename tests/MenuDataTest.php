@@ -101,6 +101,56 @@ class MenuDataTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($success, $data);
     }
 
+    public function testInsert()
+    {
+        $success = array(
+            array(
+                "id" => 1,
+                "item_id" => 2,
+                "parent_id" => 1,
+                "depth" => 0,
+                "left" => 0,
+                "right" => 0,
+                "url_name" => 'test/test2',
+                "url" => 'test2',
+            ),
+            array(
+                "id" => 1,
+                "item_id" => 9,
+                "parent_id" => 2,
+                "depth" => 0,
+                "left" => 0,
+                "right" => 0,
+                "url_name" => 'test/test9',
+                "url" => 'test9',
+            ),
+            array(
+                "id" => 1,
+                "item_id" => 7,
+                "parent_id" => 2,
+                "depth" => 0,
+                "left" => 0,
+                "right" => 0,
+                "url_name" => 'test/test7',
+                "url" => 'test7',
+            ),
+        );
+        $insertData = array(
+            array(
+            "id" => 1,
+            "item_id" => 9,
+            "parent_id" => 2,
+            "depth" => 0,
+            "left" => 0,
+            "right" => 0,
+            "url_name" => 'test/test9',
+            "url" => 'test9',
+            )
+        );
+
+        $this->assertEquals($success, $this->menuData->setFilter(array("2", "9", "7"))->insert(1, $insertData)->get());
+    }
+
     public function testGetSelfColumn()
     {
         $this->assertEquals($this->menuData->getSelfColumn(), 'item_id');

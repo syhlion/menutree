@@ -11,7 +11,7 @@ Installation：
 ``` json
 {
     "require": {
-        "rde/menutree": "0.1.*@dev"
+        "rde/menutree": "0.2.*@dev"
     }
 }
 ```
@@ -27,21 +27,6 @@ Usage：
 ---------------
 
 ``` php
-
-//可自行實作使用者選單，只要最後給MenuData的過濾資料格式如下面範例即可
-$pdo_mysql = new PDO('mysql:host=127.0.0.1;dbname=account','root','xxxx');
-$user = new User($pdo_mysql);
-
-//find_menu() 會用array回傳 每個item_id  ex array(key_1,key_2...) 
-//建構參數userMenu 可選填，沒有填預設會返回完整的選單，有填則會過濾出填入的值得選單資料
-//建構參數pdo 可選填，沒填預設會讀取src/storage/menudata.sqlite3 裡的資料
-$menuOrigin = new MenuData($user->find_menu());
-
-//建構選單樹狀物件
-$menutree = new MenuTree($menuOrigin); 
-
-//可拿到完整的樹狀結構
-$tree = $menutree->get(); 
 /*
 假設原始資料為:
 array(
@@ -66,6 +51,74 @@ array(
     "url" => contorller2/method2
     ),
 );
+*/
+
+
+//可自行實作使用者選單，只要最後給MenuData的過濾資料格式如下面範例即可
+$pdo_mysql = new PDO('mysql:host=127.0.0.1;dbname=account','root','xxxx');
+$user = new User($pdo_mysql);
+
+//find_menu() 會用array回傳 每個item_id  ex array(key_1,key_2...) 
+//建構參數userMenu 可選填，沒有填預設會返回完整的選單，有填則會過濾出填入的值得選單資料
+//建構參數pdo 可選填，沒填預設會讀取src/storage/menudata.sqlite3 裡的資料
+$menuOrigin = new MenuData($user->find_menu());
+
+$insertData = array(
+    array(
+        "id" => 1,
+        "item_id" => key_3,
+        "parent_id" => 'key_1'
+        "depth" => 0,
+        "left" => 1,
+        "right" => 2,
+        "url_name" => test3,
+        "url" => contorller3/method3
+        ),
+);
+/*
+結果為
+array(
+    array(
+    "id" => 1,
+    "item_id" => key_1,
+    "parent_id" => 'null'
+    "depth" => 0,
+    "left" => 1,
+    "right" => 2,
+    "url_name" => test1,
+    "url" => contorller1/method1
+    ),
+    array(
+    "id" => 1,
+    "item_id" => key_3,
+    "parent_id" => 'key_1'
+    "depth" => 0,
+    "left" => 1,
+    "right" => 2,
+    "url_name" => test3,
+    "url" => contorller3/method3
+    ),
+    array(
+    "id" => 2,
+    "item_id" => key_2,
+    "parent_id" => key_1,
+    "depth" => 1,
+    "left" => 3,
+    "right" => 4,
+    "url_name" => test2,
+    "url" => contorller2/method2
+    ),
+);
+*/
+$menuOrigin->insert(1, $insertData)->get(); 
+
+
+//建構選單樹狀物件
+$menutree = new MenuTree($menuOrigin); 
+
+//可拿到完整的樹狀結構
+$tree = $menutree->get(); 
+/*
 最後get回來的資料格式如以下:
 array(
     array(
@@ -101,10 +154,8 @@ array(
 )
 */
 $bool = $menutree->get("controller/method"); //可判斷此uri是否符合權限 會回傳 true false
+
 ```
-
-
-
 
 
 
