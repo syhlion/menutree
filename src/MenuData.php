@@ -111,9 +111,19 @@ class MenuData implements IMenuProvider
             $this->sqlite->exec($sql);
             $sql = "";
 
-            //TODO 因為sqlite 3.7.11前不支援 sql batch寫法 只能以此方法寫入
+            //TODO 因為sqlite 3.7.11前不支援 sql batch寫法 只能以此方法寫入為了能相容mysql & sqlite 採用此方法
             foreach ($updateData as $data) {
-                $sql .= "INSERT INTO menu (`id`, `item_id`, `parent_id`, `depth`, `left`, `right`, `url_name`, `url`) VALUES "."('".implode("','", $data)."')".";";
+
+                //欄位重置
+                $coloum = array();
+                $val = array();
+                foreach ($data as $key => $value) {
+
+                    $coloum[] = "`".$key."`";
+                    $val[] = "'".$value."'";
+                }
+                $sql .= "INSERT INTO menu (".implode(",", $coloum).") VALUES "."(".implode(",", $val).");";
+
 
             }
             $this->sqlite->beginTransaction();
@@ -152,6 +162,7 @@ class MenuData implements IMenuProvider
     public function insert($index, Array $insertData)
     {
         $list = $this->get();
+
         $end = array_slice($list, $index, count($list));
         array_splice($list, $index, count($list), $insertData);
         foreach ($end as $item) {

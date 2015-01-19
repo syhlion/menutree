@@ -121,7 +121,6 @@ class MenuDataTest extends PHPUnit_Framework_TestCase
         );
         $insertData = array(
             array(
-            "id" => 1,
             "item_id" => 9,
             "parent_id" => 2,
             "depth" => 0,
@@ -129,6 +128,7 @@ class MenuDataTest extends PHPUnit_Framework_TestCase
             "right" => 0,
             "url_name" => 'test/test9',
             "url" => 'test9',
+            "id" => 1
             )
         );
 
