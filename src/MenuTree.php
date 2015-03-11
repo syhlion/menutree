@@ -66,7 +66,33 @@ class MenuTree
 
             return false;
         }
+    }
 
+    /**
+     * 搜尋樹狀結構裡的節點
+     * @param $id 目前只支援用key搜尋 不支援模糊搜尋
+     * @return array 搜尋整個樹狀結構第一個符合條件的的節點以及子節點
+     */
+    public function search($id)
+    {
+        return static::searchTree($this->treeData,$id);
+    }
+
+    private static function searchTree($lists, $id)
+    {
+        $return = array();
+        foreach($lists as $list)
+        {
+            if($list['self']['item_id'] === $id) {
+                return $list;
+            }
+
+            $return = static::searchTree($list['children'],$id);
+            if(count($return) > 0) {
+                return $return;
+            }
+
+        }
     }
 
     /**
