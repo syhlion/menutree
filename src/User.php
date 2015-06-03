@@ -9,7 +9,7 @@
 namespace Rde;
 use \PDO;
 
-class User implements IUserProvider
+class User implements UserProviderInterface
 {
 
     private $pdo;

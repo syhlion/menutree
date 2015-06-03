@@ -9,7 +9,7 @@
 namespace Rde;
 
 
-Interface IMenuProvider
+Interface MenuProviderInterface
 {
 
     /**

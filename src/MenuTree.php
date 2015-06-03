@@ -17,7 +17,7 @@ class MenuTree
     //存放組合完畢的樹狀結構
     private $treeData;
 
-    public function __construct(IMenuProvider $menuProvider)
+    public function __construct(MenuProviderInterface $menuProvider)
     {
         $this->menuProvider = $menuProvider;
         $this->treeData = static::getTree($this->menuProvider->get(), $this->menuProvider->getSelfColumn(), $this->menuProvider->getParentColumn());

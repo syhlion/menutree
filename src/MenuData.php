@@ -11,7 +11,7 @@ use \PDO;
 
 use SebastianBergmann\Exporter\Exception;
 
-class MenuData implements IMenuProvider
+class MenuData implements MenuProviderInterface
 {
 
 
