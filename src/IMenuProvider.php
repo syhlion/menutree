@@ -9,7 +9,7 @@
 namespace Rde;
 
 
-interface IMenuProvider
+Interface IMenuProvider
 {
 
     /**

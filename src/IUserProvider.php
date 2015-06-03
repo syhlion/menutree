@@ -9,14 +9,14 @@
 namespace Rde;
 
 
-interface IUserProvider
+Interface IUserProvider
 {
     /**
      * 拿回使用者選單key
      * @param $user_key
      * @return mixed array ex array(item_1, item_2, ....)
      */
-    public function find_menu();
+    public function findMenu();
 
 
 }

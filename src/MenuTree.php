@@ -7,7 +7,6 @@
  */
 
 namespace Rde;
-use \PDO;
 
 class MenuTree
 {

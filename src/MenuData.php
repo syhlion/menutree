@@ -28,7 +28,7 @@ class MenuData implements IMenuProvider
     public function __construct(PDO $pdo  = null)
     {
         try {
-            if ($pdo == null) {
+            if ($pdo === null) {
                 $pdo = new PDO('sqlite:' . dirname(__FILE__) . '/storage/menudata.sqlite3');
             }
             $this->sqlite = $pdo;
@@ -111,7 +111,7 @@ class MenuData implements IMenuProvider
             $this->sqlite->exec($sql);
             $sql = "";
 
-            //TODO 因為sqlite 3.7.11前不支援 sql batch寫法 只能以此方法寫入為了能相容mysql & sqlite 採用此方法
+            //因為sqlite 3.7.11前不支援 sql batch寫法 只能以此方法寫入為了能相容mysql & sqlite 採用此方法
             foreach ($updateData as $data) {
 
                 //欄位重置

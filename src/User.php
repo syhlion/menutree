@@ -25,7 +25,7 @@ class User implements IUserProvider
     public function __construct(PDO $pdo, $site, $userId)
     {
 
-        //TODO 因應帳號兩個來源，一個是ACC一個是本身DB 未來整回ACC時,要作修改
+        //因應帳號兩個來源，一個是ACC一個是本身DB 未來整回ACC時,要作修改
         $this->pdo = $pdo;
         if ($site == "allctl") {
             $this->usergroup_table = "menu_allctlusergroup";
@@ -39,7 +39,7 @@ class User implements IUserProvider
     /**
      * @return mixed array
      */
-    public function find_menu()
+    public function findMenu()
     {
         $sql = "SELECT * FROM {$this->usergroup_table}
                 JOIN {$this->menugroup_table}
@@ -54,7 +54,6 @@ class User implements IUserProvider
             $tmp =  explode("|", $data['item_list']);
             $item = array_merge($tmp, $item);
         }
-        $menu = array();
 
         //因為不給null 系統選單會預設全撈
         $item= (count($item) <= 0 ) ? array('null') : $item;

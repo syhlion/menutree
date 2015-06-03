@@ -40,8 +40,8 @@ class UserTest extends PHPUnit_Framework_TestCase
     {
         $user1 = new \Rde\User($this->pdo,'allctl',1);
         $user2 = new \Rde\User($this->pdo,'ctl',1);
-        $this->assertEquals($user1->find_menu(),array("test1","test2","test3"));
-        $this->assertEquals($user2->find_menu(),array("test1","test2","test3"));
+        $this->assertEquals($user1->findMenu(),array("test1","test2","test3"));
+        $this->assertEquals($user2->findMenu(),array("test1","test2","test3"));
     }
 
     public function tearDown()
