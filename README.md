@@ -3,7 +3,7 @@ MenuTree
 
 [![Build Status](https://travis-ci.org/syhlion/menutree.svg?branch=master)](https://travis-ci.org/syhlion/menutree)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/syhlion/menutree/badges/quality-score.png)](https://scrutinizer-ci.com/g/syhlion/menutree/)
-
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/a2c44804-8b75-409e-8338-2817ab044507/mini.png)](https://insight.sensiolabs.com/projects/a2c44804-8b75-409e-8338-2817ab044507)
 
 Installation：
 ------
