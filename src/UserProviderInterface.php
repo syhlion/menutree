@@ -9,7 +9,7 @@
 namespace Rde;
 
 
-Interface IUserProvider
+Interface UserProviderInterface
 {
     /**
      * 拿回使用者選單key
